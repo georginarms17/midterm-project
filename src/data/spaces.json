@@ -1,0 +1,123 @@
+[
+  {
+    "id": 1,
+    "name": "Diligence Cafe",
+    "location": "Unit 2A, Elizabeth Hall, Katipunan Avenue, Loyola Heights, Quezon City",
+    "price": 250,
+    "main_image": "/public/assets/diligence-cafe-3.jpg",
+    "images": ["/public/assets/diligence-cafe-1.jpg", "/public/assets/diligence-cafe-2.jpg", "/public/assets/diligence-cafe-4.jpg"],
+    "description": "Diligence Cafe provides a stress-free study and work environment with unlimited coffee, cozy napping areas, and convenient amenities like showers and printers.",
+    "amenities": ["High-speed Wi-Fi", "Free Coffee", "Meeting Rooms", "Air-conditioned", "24/7 Access"],
+    "hours": "12:00 PM - 7:00 AM",
+    "time_slots": ["8AM - 1PM", "1PM - 5PM", "5PM - 9PM"]
+  },
+  {
+    "id": 2,
+    "name": "WorkHaven Makati",
+    "location": "Makati City",
+    "price": 500,
+    "main_image": "/public/assets/work-haven-1.jpg",
+    "images": ["/public/assets/work-haven-2.png", "/public/assets/work-haven-3.jpg", "/public/assets/work-haven-4.jpg"],
+    "description": "A professional co-working environment in the heart of the business district. Ideal for meetings, collaborations, and networking.",
+    "amenities": ["Fiber Internet", "Meeting Rooms", "Gourmet Pantry", "24/7 Access", "Ergonomic Chairs"],
+    "hours": "Open 24/7",
+    "time_slots": ["Full Day Pass", "Night Owl Pass (9pm-6am)"]
+  },
+  {
+    "id": 3,
+    "name": "Plug It - Coworking Space & Study Hub",
+    "location": "902 Eloisa Street corner España Boulevard, Sampaloc, Manila City",
+    "price": 150,
+    "main_image": "/public/assets/plug-it-1.jpeg",
+    "images": ["/public/assets/plug-it-2.jpeg", "/public/assets/plug-it-3.jpeg", "/public/assets/plug-it-4.jpeg"],
+    "description": "Plug It is a minimalist, quiet workspace with plenty of outlets and unlimited locally sourced coffee, making it easy to stay focused while supporting local farmers.",
+    "amenities": ["Group Collaboration", "Power Sockets", "Fast Wi-Fi", "Unlimited Coffee", "Office Suites"],
+    "hours": "12:00 PM - 6:00 AM",
+    "time_slots": ["12PM - 3PM", "3PM - 6PM", "6PM - 9PM"]
+  },
+  {
+    "id": 4,
+    "name": "The Lib",
+    "location": "40 Esteban Abada Street, Loyola Heights, Quezon City",
+    "price": 300,
+    "main_image": "/public/assets/the-lib-4.jpg",
+    "images": ["/public/assets/the-lib-1.jpg", "/public/assets/the-lib-2.jpg", "/public/assets/the-lib-3.jpg"],
+    "description": "The Lib is a bright, Instagram-worthy café with delicious food, cozy interiors, and a motivating atmosphere that makes studying and working both productive and enjoyable.",
+    "amenities": ["High-Speed WiFi", "Abundant Power Outlets", "Spacious Seating Areas", "Natural Lighting", "Coffee & Light Meals"],
+    "hours": "10:00 AM - 9:00 PM",
+    "time_slots": ["10AM - 1PM", "1PM - 4PM", "4PM - 9PM"]
+  },
+  {
+    "id": 5,
+    "name": "HomeRoom Co-Working and Study Lounge",
+    "location": "Dioresa Plaza, 1521 Dapitan Street, Sampaloc, Manila",
+    "price": 388,
+    "main_image": "/public/assets/homeroom-2.jpeg",
+    "images": ["/public/assets/homeroom-1.jpeg", "/public/assets/homeroom-3.jpeg", "/public/assets/homeroom-4.jpeg"],
+    "description": "HomeRoom offers flexible study spaces with both desks and floor seating, unlimited snacks, and amenities designed for comfort and convenience.",
+    "amenities": ["Free WiFi", "Air-Conditioned Rooms", "Unlimited Snacks", "Shower Area", "Separate Pantry Area"],
+    "hours": "10:00 AM - 7:00 AM (Sun - Fri), 10:00 AM - 12:00 AM (Sat)",
+    "time_slots": ["8AM - 1PM", "2PM - 6PM", "7PM - 10PM"]
+  },
+  {
+    "id": 6,
+    "name": "The Library at Ayala Museum",
+    "location": "Makati City, Metro Manila",
+    "price": 150,
+    "main_image": "/public/assets/lib-ayala-4.jpg",
+    "images": ["/public/assets/lib-ayala-1.jpg", "/public/assets/lib-ayala-2.jpg", "/public/assets/lib-ayala-3.jpg"],
+    "description": "An art and research library offering a scholarly atmosphere with a vast collection of Filipiniana materials. A quiet and inspiring place to study.",
+    "amenities": ["Academic Resources", "Quiet Environment", "Reading Tables", "Museum Access (optional)", "Air Conditioning"],
+    "hours": "9:00 AM - 6:00 PM (Closed Mondays)",
+    "time_slots": ["9AM - 12PM", "1PM - 6PM"]
+  },
+  {
+    "id": 7,
+    "name": "933 Creatives",
+    "location": "1042 G.M. Tolentino Street, Sampaloc, Manila",
+    "price": 150,
+    "main_image": "/public/assets/933-creatives-1.jpg",
+    "images": ["/public/assets/933-creatives-2.jpeg", "/public/assets/933-creatives-3.jpeg", "/public/assets/933-creatives-4.jpeg"],
+    "description": "933 Creatives is a quirky coworking space designed for freelancers and creatives, offering a mix of professional and laid-back work areas to fuel productivity and imagination.",
+    "amenities": ["Napping Area", "Premium WiFi", "Drafting Tables", "Shower Area", "Cubicle-Style Seats"],
+    "hours": "Open 24/7",
+    "time_slots": ["6AM - 12PM", "12PM - 6PM", "6PM - 12AM"]
+  },
+  {
+    "id": 8,
+    "name": "UP Diliman Main Library",
+    "location": "Quezon City, Metro Manila",
+    "price": 50,
+    "main_image": "/public/assets/diliman-1.jpg",
+    "images": ["/public/assets/diliman-3.png", "/public/assets/diliman-2.jpg", "/public/assets/diliman-4.jpg"],
+    "description": "The iconic main library of the University of the Philippines. Offers a vast, academic environment perfect for serious studying and research.",
+    "amenities": ["Extensive Book Collection", "Silent Study Floors", "Research Assistance", "Photocopying Services", "Spacious Reading Areas"],
+    "hours": "8:00 AM - 7:00 PM (Varies per section)",
+    "time_slots": ["8AM - 12PM", "1PM - 5PM"]
+  },
+  {
+    "id": 9,
+    "name": "Kasa Green Residences Study Hub",
+    "location": "Katipunan, Quezon City",
+    "price": 180,
+    "main_image": "/public/assets/green-1.jpg",
+    "images": ["/public/assets/green-2.jpeg", "/public/assets/green-3.jpg", "/public/assets/green-4.jpg"],
+    "description": "A popular study hub for students from nearby universities (Ateneo, Miriam, UP). Known for its reliable internet and no-nonsense study atmosphere.",
+    "amenities": ["High-Speed Internet", "24/7 Operation", "Affordable Coffee Bar", "Group Study Rooms", "Air Conditioning"],
+    "hours": "Open 24/7",
+    "time_slots": ["8AM - 4PM", "4PM - 12AM", "12AM - 8AM"]
+  },
+  {
+    "id": 10,
+    "name": "OrangeDesk Coworking Space And Study Lounge",
+    "location": "España Boulevard corner P. Noval Street, Manila City",
+    "price": 120,
+    "main_image": "/public/assets/orangedesk-1.jpeg",
+    "images": ["/public/assets/orangedesk-2.jpeg", "/public/assets/orangedesk-3.jpeg", "/public/assets/orangedesk-4.jpeg"],
+    "description": "OrangeDesk is a playful and flexible study space that encourages creativity with unique seating options, drafting tables, and even a resident dog to help relieve stress.",
+    "amenities": ["Fridge", "Drafting Tables", "Unlimited Drinks", "Shower Room", "Napping Areas"],
+    "hours": "12:00 PM - 6:00 AM",
+    "time_slots": ["12PM - 4PM", "4PM - 8PM", "8PM - 12AM"]
+  }
+]
+
