@@ -13,8 +13,33 @@ const BookingForm = ({ space }) => {
   const today = new Date();
   const todayStr = today.toISOString().split("T")[0]; // YYYY-MM-DD
 
+  // Parse "5PM" etc into a Date object
+  const parseTime = (dateStr, timeStr) => {
+    const match = timeStr.match(/(\d{1,2})(AM|PM)/i);
+    if (!match) return null;
+    let hour = parseInt(match[1], 10);
+    const meridian = match[2].toUpperCase();
+
+    if (meridian === "PM" && hour !== 12) hour += 12;
+    if (meridian === "AM" && hour === 12) hour = 0;
+
+    const dt = new Date(dateStr);
+    dt.setHours(hour, 0, 0, 0);
+    return dt;
+  };
+
+  const isSlotTaken = (slotCheck) => {
+    return Object.values(bookings).some((userBookings) =>
+      userBookings.some(
+        (b) =>
+          b.spaceId === space.id && b.date === date && b.timeSlot === slotCheck
+      )
+    );
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (!user) {
       navigate("/login");
       return;
@@ -25,44 +50,19 @@ const BookingForm = ({ space }) => {
     const selectedDate = new Date(date);
     const now = new Date();
 
-    // Reject if date is before today
     if (selectedDate < new Date(todayStr)) {
       return alert("You cannot book a date before today");
     }
 
-    // If booking today, check time slot vs current time
     if (date === todayStr) {
-      // Parse slot start into a Date
-      const parseTime = (dateStr, timeStr) => {
-        // Expect formats like "5PM", "11AM", "12PM"
-        const match = timeStr.match(/(\\d{1,2})(AM|PM)/i);
-        if (!match) return null;
-        let hour = parseInt(match[1], 10);
-        const meridian = match[2].toUpperCase();
-
-        if (meridian === "PM" && hour !== 12) hour += 12;
-        if (meridian === "AM" && hour === 12) hour = 0;
-
-        const dt = new Date(dateStr);
-        dt.setHours(hour, 0, 0, 0);
-        return dt;
-      };
-
-      const slotStartStr = slot.split("-")[0].trim(); // e.g. "5PM"
+      const slotStartStr = slot.split("-")[0].trim();
       const slotDateTime = parseTime(date, slotStartStr);
-
       if (slotDateTime && slotDateTime < now) {
         return alert("You cannot book a time slot that has already passed");
       }
     }
 
-    // Check if slot already booked (by anyone)
-    const isTaken = Object.values(bookings).some((userBookings) =>
-      userBookings.some(
-        (b) => b.spaceId === space.id && b.date === date && b.timeSlot === slot
-      )
-    );
-    if (isTaken) {
+    if (isSlotTaken(slot)) {
       return alert(
         "This time slot has already been booked. Please choose another."
       );
@@ -106,8 +106,9 @@ const BookingForm = ({ space }) => {
           className="w-full border px-2 py-1 rounded mt-1"
         >
           {space.time_slots.map((s) => (
-            <option key={s} value={s}>
+            <option key={s} value={s} disabled={date && isSlotTaken(s)}>
               {s}
+              {date && isSlotTaken(s) ? " (Booked)" : ""}
             </option>
           ))}
         </select>
