@@ -1,16 +1,26 @@
-import React, { createContext, useContext } from "react";
-import useLocalStorage from "../hooks/useLocalStorage";
+import React, { createContext, useContext } from 'react';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // Persist user between refreshes
-  const [user, setUser] = useLocalStorage("user", null);
+  const [user, setUser] = useLocalStorage('user', null);
+  const [allUsers, setAllUsers] = useLocalStorage('allUsers', {}); 
+  // allUsers will map { username: userId }
 
-  // Simulated login - no backend in this course project
   const login = (name) => {
-    const fakeUser = { id: "u_" + Date.now(), name };
-    setUser(fakeUser);
+    let userId;
+    if (allUsers[name]) {
+      // Existing user, reuse same ID
+      userId = allUsers[name];
+    } else {
+      // New user, create ID and save it
+      userId = 'u_' + Date.now();
+      setAllUsers(prev => ({ ...prev, [name]: userId }));
+    }
+
+    const loggedInUser = { id: userId, name };
+    setUser(loggedInUser);
   };
 
   const logout = () => setUser(null);
