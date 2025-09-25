@@ -8,9 +8,32 @@ const BookingForm = ({ space }) => {
   const [date, setDate] = useState("");
   const [slot, setSlot] = useState(space.time_slots ? space.time_slots[0] : "");
 
+  const today = new Date();
+  const todayStr = today.toISOString().split("T")[0]; // YYYY-MM-DD
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!user) return alert("Please login to book");
+
+    if (!date) return alert("Please select a date");
+
+    const selectedDate = new Date(date);
+    const now = new Date();
+
+    // Reject if date is before today
+    if (selectedDate < new Date(todayStr)) {
+      return alert("You cannot book a date before today");
+    }
+
+    // If booking today, check time slot vs current time
+    if (date === todayStr) {
+      // Assume slot format like "09:00 AM - 11:00 AM"
+      const slotStart = slot.split("-")[0].trim();
+      const slotDateTime = new Date(`${date} ${slotStart}`);
+      if (slotDateTime < now) {
+        return alert("You cannot book a time slot that has already passed");
+      }
+    }
 
     const booking = {
       id: "b_" + Date.now(),
@@ -37,6 +60,7 @@ const BookingForm = ({ space }) => {
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
+          min={todayStr} // Prevents picking dates before today
           className="w-full border px-2 py-1 rounded mt-1"
           required
         />

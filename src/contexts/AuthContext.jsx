@@ -1,11 +1,11 @@
-import React, { createContext, useContext } from 'react';
-import useLocalStorage from '../hooks/useLocalStorage';
+import React, { createContext, useContext } from "react";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useLocalStorage('user', null);
-  const [allUsers, setAllUsers] = useLocalStorage('allUsers', {}); 
+  const [user, setUser] = useLocalStorage("user", null);
+  const [allUsers, setAllUsers] = useLocalStorage("allUsers", {});
   // allUsers will map { username: userId }
 
   const login = (name) => {
@@ -15,8 +15,8 @@ export const AuthProvider = ({ children }) => {
       userId = allUsers[name];
     } else {
       // New user, create ID and save it
-      userId = 'u_' + Date.now();
-      setAllUsers(prev => ({ ...prev, [name]: userId }));
+      userId = "u_" + Date.now();
+      setAllUsers((prev) => ({ ...prev, [name]: userId }));
     }
 
     const loggedInUser = { id: userId, name };
