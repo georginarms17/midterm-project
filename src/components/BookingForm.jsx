@@ -45,30 +45,33 @@ const BookingForm = ({ space }) => {
     e.preventDefault();
 
     if (!user) {
+      alert(
+        "You must be logged in to book a study space. Redirecting to login page..."
+      );
       navigate("/login");
       return;
     }
 
-    if (!date) return alert("Please select a date");
+    if (!date) return alert("Please select a date!");
 
     const selectedDate = new Date(date);
     const now = new Date();
 
     if (selectedDate < new Date(todayStr)) {
-      return alert("You cannot book a date before today");
+      return alert("You cannot book a date before today.");
     }
 
     if (date === todayStr) {
       const slotStartStr = slot.split("-")[0].trim();
       const slotDateTime = parseTime(date, slotStartStr);
       if (slotDateTime && slotDateTime < now) {
-        return alert("You cannot book a time slot that has already passed");
+        return alert("You cannot book a time slot that has already passed.");
       }
     }
 
     if (isSlotTaken(slot)) {
       return alert(
-        "This time slot has already been booked. Please choose another."
+        "This time slot has already been booked. Please choose another time slot."
       );
     }
 
@@ -86,6 +89,7 @@ const BookingForm = ({ space }) => {
 
     addBooking(booking);
     alert("Booking confirmed!");
+    navigate("/dashboard/my-bookings"); // Redirect to bookings page after confirmation
   };
 
   return (
