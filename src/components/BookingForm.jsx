@@ -29,11 +29,15 @@ const BookingForm = ({ space }) => {
   };
 
   const isSlotTaken = (slotCheck) => {
-    return Object.values(bookings).some((userBookings) =>
-      userBookings.some(
-        (b) =>
-          b.spaceId === space.id && b.date === date && b.timeSlot === slotCheck
-      )
+    return Object.values(bookings).some(
+      (userBookings) =>
+        Array.isArray(userBookings) &&
+        userBookings.some(
+          (b) =>
+            b.spaceId === space.id &&
+            b.date === date &&
+            b.timeSlot === slotCheck
+        )
     );
   };
 
