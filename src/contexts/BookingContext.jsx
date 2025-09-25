@@ -1,24 +1,26 @@
-import { createContext, useContext } from 'react';
-import useLocalStorage from '../hooks/useLocalStorage';
+import React, { createContext, useContext } from "react";
+import useLocalStorage from "../hooks/useLocalStorage";
+import { useAuth } from "./AuthContext";
 
-const BookingContext = createContext(null);
+const BookingContext = createContext();
 
 export const BookingProvider = ({ children }) => {
-  const [bookings, setBookings] = useLocalStorage('bookings', []);
+  const [bookings, setBookings] = useLocalStorage("bookings", []);
+  const { user } = useAuth();
 
-  const addBooking = (newBooking) => {
-    setBookings(prevBookings => [...prevBookings, newBooking]);
-  };
+  const addBooking = (booking) => setBookings((prev) => [...prev, booking]);
+  const cancelBooking = (id) =>
+    setBookings((prev) => prev.filter((b) => b.id !== id));
+  const getUserBookings = (userId) =>
+    bookings.filter((b) => b.userId === userId);
 
-  const cancelBooking = (bookingId) => {
-    setBookings(prevBookings => prevBookings.filter(booking => booking.id !== bookingId));
-  };
-
-  const value = { bookings, addBooking, cancelBooking };
-
-  return <BookingContext.Provider value={value}>{children}</BookingContext.Provider>;
+  return (
+    <BookingContext.Provider
+      value={{ bookings, addBooking, cancelBooking, getUserBookings }}
+    >
+      {children}
+    </BookingContext.Provider>
+  );
 };
 
-export const useBookings = () => {
-  return useContext(BookingContext);
-};
+export const useBookings = () => useContext(BookingContext);

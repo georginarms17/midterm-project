@@ -1,14 +1,15 @@
-const SearchBar = ({ onSearchChange }) => {
-  return (
-    <div className="mb-6">
-      <input
-        type="text"
-        placeholder="Search by name or location..."
-        onChange={(e) => onSearchChange(e.target.value)}
-        className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-    </div>
-  );
-};
+import React from "react";
+
+const SearchBar = ({ value, onChange }) => (
+  <div className="mb-4">
+    <input
+      type="text"
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      placeholder="Search by name or location..."
+      className="w-full px-4 py-2 border rounded"
+    />
+  </div>
+);
 
 export default SearchBar;

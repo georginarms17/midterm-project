@@ -1,22 +1,22 @@
-import React, { createContext, useContext, useMemo } from "react";
+import React, { createContext, useContext } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 const AuthContext = createContext();
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useLocalStorage("ssb_user", null);
+export const AuthProvider = ({ children }) => {
+  // Persist user between refreshes
+  const [user, setUser] = useLocalStorage("user", null);
 
-  const login = (userData) => {
-    setUser({ ...userData, loggedAt: new Date().toISOString() });
+  // Simulated login - no backend in this course project
+  const login = (name) => {
+    const fakeUser = { id: "u_" + Date.now(), name };
+    setUser(fakeUser);
   };
 
   const logout = () => setUser(null);
 
-  const value = useMemo(() => ({ user, login, logout }), [user]);
-
+  const value = { user, login, logout };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
+};
 
-export function useAuth() {
-  return useContext(AuthContext);
-}
+export const useAuth = () => useContext(AuthContext);
