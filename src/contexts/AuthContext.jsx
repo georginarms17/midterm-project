@@ -1,22 +1,32 @@
-import React, { createContext, useContext, useMemo } from "react";
+import React, { createContext, useContext } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 const AuthContext = createContext();
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useLocalStorage("ssb_user", null);
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useLocalStorage("user", null);
+  const [allUsers, setAllUsers] = useLocalStorage("allUsers", {});
+  // allUsers will map { username: userId }
 
-  const login = (userData) => {
-    setUser({ ...userData, loggedAt: new Date().toISOString() });
+  const login = (name) => {
+    let userId;
+    if (allUsers[name]) {
+      // Existing user, reuse same ID
+      userId = allUsers[name];
+    } else {
+      // New user, create ID and save it
+      userId = "u_" + Date.now();
+      setAllUsers((prev) => ({ ...prev, [name]: userId }));
+    }
+
+    const loggedInUser = { id: userId, name };
+    setUser(loggedInUser);
   };
 
   const logout = () => setUser(null);
 
-  const value = useMemo(() => ({ user, login, logout }), [user]);
-
+  const value = { user, login, logout };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
+};
 
-export function useAuth() {
-  return useContext(AuthContext);
-}
+export const useAuth = () => useContext(AuthContext);

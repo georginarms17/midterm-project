@@ -2,41 +2,41 @@ import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-export default function Login() {
-  const { login } = useAuth();
+const Login = () => {
+  const { user, login } = useAuth();
   const [name, setName] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!name.trim()) {
-      alert("Please enter your name.");
-      return;
-    }
-    login({ name: name.trim() });
-    navigate("/", { replace: true }); // ✅ go to homepage
+    if (!name.trim()) return alert("Please enter a name");
+    login(name.trim());
+    navigate("/dashboard/my-bookings");
   };
 
+  if (user) return <div>You are already logged in as {user.name}.</div>;
+
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded shadow">
-      <h2 className="text-xl font-semibold mb-4">Login</h2>
-      <form onSubmit={handleSubmit}>
-        <label className="block mb-4">
-          <span className="text-sm text-slate-600">Name</span>
-          <input
-            type="text"
-            className="mt-1 w-full border rounded px-2 py-1"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </label>
-        <button
-          type="submit"
-          className="px-4 py-2 bg-indigo-600 text-white rounded"
-        >
-          Login
-        </button>
+    <div className="max-w-md mx-auto">
+      <h2 className="text-xl font-bold mb-4">Login</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <input
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Your name"
+          className="w-full border px-3 py-2 rounded"
+        />
+        <div>
+          <button
+            type="submit"
+            className="px-4 py-2 bg-blue-600 text-white rounded"
+          >
+            Sign in
+          </button>
+        </div>
       </form>
     </div>
   );
-}
+};
+
+export default Login;

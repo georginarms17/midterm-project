@@ -1,121 +1,127 @@
 import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useBookings } from "../contexts/BookingContext";
+import { useNavigate } from "react-router-dom";
 
-export default function BookingForm({ space }) {
+const BookingForm = ({ space }) => {
   const { user } = useAuth();
-  const { addBooking } = useBookings();
-
+  const { bookings, addBooking } = useBookings();
   const [date, setDate] = useState("");
-  const [timeSlot, setTimeSlot] = useState(space.time_slots?.[0] || "");
-  const [guests, setGuests] = useState(1);
-  const [notes, setNotes] = useState("");
-  const [statusMsg, setStatusMsg] = useState(null);
+  const [slot, setSlot] = useState(space.time_slots ? space.time_slots[0] : "");
+  const navigate = useNavigate();
+
+  const today = new Date();
+  const todayStr = today.toISOString().split("T")[0]; // YYYY-MM-DD
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!user) {
-      setStatusMsg("You must be logged in to make a booking.");
-      return;
-    }
-    if (!date || !timeSlot) {
-      setStatusMsg("Please select both date and timeslot.");
+      navigate("/login");
       return;
     }
 
-    const datetime = `${date} ${timeSlot}`;
+    if (!date) return alert("Please select a date");
+
+    const selectedDate = new Date(date);
+    const now = new Date();
+
+    // Reject if date is before today
+    if (selectedDate < new Date(todayStr)) {
+      return alert("You cannot book a date before today");
+    }
+
+    // If booking today, check time slot vs current time
+    if (date === todayStr) {
+      // Parse slot start into a Date
+      const parseTime = (dateStr, timeStr) => {
+        // Expect formats like "5PM", "11AM", "12PM"
+        const match = timeStr.match(/(\\d{1,2})(AM|PM)/i);
+        if (!match) return null;
+        let hour = parseInt(match[1], 10);
+        const meridian = match[2].toUpperCase();
+
+        if (meridian === "PM" && hour !== 12) hour += 12;
+        if (meridian === "AM" && hour === 12) hour = 0;
+
+        const dt = new Date(dateStr);
+        dt.setHours(hour, 0, 0, 0);
+        return dt;
+      };
+
+      const slotStartStr = slot.split("-")[0].trim(); // e.g. "5PM"
+      const slotDateTime = parseTime(date, slotStartStr);
+
+      if (slotDateTime && slotDateTime < now) {
+        return alert("You cannot book a time slot that has already passed");
+      }
+    }
+
+    // Check if slot already booked (by anyone)
+    const isTaken = Object.values(bookings).some((userBookings) =>
+      userBookings.some(
+        (b) => b.spaceId === space.id && b.date === date && b.timeSlot === slot
+      )
+    );
+    if (isTaken) {
+      return alert(
+        "This time slot has already been booked. Please choose another."
+      );
+    }
 
     const booking = {
-      userEmail: user.email,
-      userName: user.name,
-      spaceId: String(space.id),
+      id: "b_" + Date.now(),
+      spaceId: space.id,
       spaceName: space.name,
-      datetime,
-      guests,
-      notes,
+      userId: user.id,
+      userName: user.name,
+      date,
+      timeSlot: slot,
+      price: space.price,
+      createdAt: new Date().toISOString(),
     };
 
     addBooking(booking);
-    setStatusMsg("Booking successful! Check your dashboard to manage it.");
-
-    setDate("");
-    setTimeSlot(space.time_slots?.[0] || "");
-    setGuests(1);
-    setNotes("");
+    alert("Booking confirmed!");
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-4 rounded shadow mt-6">
-      <h4 className="text-lg font-semibold mb-3">Book this space</h4>
-
-      {!user && (
-        <p className="text-sm text-red-600">
-          You must <strong>login</strong> before booking.
-        </p>
-      )}
-
+    <form onSubmit={handleSubmit} className="border p-4 rounded">
+      <h4 className="font-semibold mb-2">Book this space</h4>
       <label className="block mb-2">
-        <span className="text-sm text-slate-600">Date</span>
+        Date
         <input
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
-          className="mt-1 w-full border rounded px-2 py-1"
+          min={todayStr}
+          className="w-full border px-2 py-1 rounded mt-1"
+          required
         />
       </label>
-
-      <label className="block mb-2">
-        <span className="text-sm text-slate-600">Time slot</span>
+      <label className="block mb-4">
+        Time Slot
         <select
-          value={timeSlot}
-          onChange={(e) => setTimeSlot(e.target.value)}
-          className="mt-1 w-full border rounded px-2 py-1"
+          value={slot}
+          onChange={(e) => setSlot(e.target.value)}
+          className="w-full border px-2 py-1 rounded mt-1"
         >
-          {space.time_slots?.map((t, idx) => (
-            <option key={idx} value={t}>
-              {t}
+          {space.time_slots.map((s) => (
+            <option key={s} value={s}>
+              {s}
             </option>
           ))}
         </select>
       </label>
-
-      <label className="block mb-2">
-        <span className="text-sm text-slate-600">Guests</span>
-        <input
-          type="number"
-          min={1}
-          max={space.capacity || 20}
-          value={guests}
-          onChange={(e) => setGuests(Number(e.target.value))}
-          className="mt-1 w-24 border rounded px-2 py-1"
-        />
-      </label>
-
-      <label className="block mb-4">
-        <span className="text-sm text-slate-600">Notes (optional)</span>
-        <textarea
-          rows={3}
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          className="mt-1 w-full border rounded px-2 py-1"
-        />
-      </label>
-
-      <div className="flex items-center gap-3">
-        <button
-          type="submit"
-          className="px-4 py-2 bg-indigo-600 text-white rounded"
-        >
-          Book
-        </button>
-        <span className="text-sm text-slate-500">
-          ₱{space.price}/hr • {space.hours}
-        </span>
-      </div>
-
-      {statusMsg && (
-        <p className="mt-3 text-sm text-green-600">{statusMsg}</p>
-      )}
+      <button
+        type="submit"
+        className={`px-4 py-2 rounded ${
+          user ? "bg-green-600 text-white" : "bg-blue-600 text-white"
+        }`}
+      >
+        {user ? "Confirm Booking" : "Login to Book"}
+      </button>
     </form>
   );
-}
+};
+
+export default BookingForm;
