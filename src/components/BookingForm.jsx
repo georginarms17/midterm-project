@@ -1,19 +1,24 @@
 import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useBookings } from "../contexts/BookingContext";
+import { useNavigate } from "react-router-dom";
 
 const BookingForm = ({ space }) => {
   const { user } = useAuth();
-  const { addBooking } = useBookings();
+  const { bookings, addBooking } = useBookings();
   const [date, setDate] = useState("");
   const [slot, setSlot] = useState(space.time_slots ? space.time_slots[0] : "");
+  const navigate = useNavigate();
 
   const today = new Date();
   const todayStr = today.toISOString().split("T")[0]; // YYYY-MM-DD
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!user) return alert("Please login to book");
+    if (!user) {
+      navigate("/login");
+      return;
+    }
 
     if (!date) return alert("Please select a date");
 
@@ -27,12 +32,40 @@ const BookingForm = ({ space }) => {
 
     // If booking today, check time slot vs current time
     if (date === todayStr) {
-      // Assume slot format like "09:00 AM - 11:00 AM"
-      const slotStart = slot.split("-")[0].trim();
-      const slotDateTime = new Date(`${date} ${slotStart}`);
-      if (slotDateTime < now) {
+      // Parse slot start into a Date
+      const parseTime = (dateStr, timeStr) => {
+        // Expect formats like "5PM", "11AM", "12PM"
+        const match = timeStr.match(/(\\d{1,2})(AM|PM)/i);
+        if (!match) return null;
+        let hour = parseInt(match[1], 10);
+        const meridian = match[2].toUpperCase();
+
+        if (meridian === "PM" && hour !== 12) hour += 12;
+        if (meridian === "AM" && hour === 12) hour = 0;
+
+        const dt = new Date(dateStr);
+        dt.setHours(hour, 0, 0, 0);
+        return dt;
+      };
+
+      const slotStartStr = slot.split("-")[0].trim(); // e.g. "5PM"
+      const slotDateTime = parseTime(date, slotStartStr);
+
+      if (slotDateTime && slotDateTime < now) {
         return alert("You cannot book a time slot that has already passed");
       }
+    }
+
+    // Check if slot already booked (by anyone)
+    const isTaken = Object.values(bookings).some((userBookings) =>
+      userBookings.some(
+        (b) => b.spaceId === space.id && b.date === date && b.timeSlot === slot
+      )
+    );
+    if (isTaken) {
+      return alert(
+        "This time slot has already been booked. Please choose another."
+      );
     }
 
     const booking = {
@@ -60,7 +93,7 @@ const BookingForm = ({ space }) => {
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
-          min={todayStr} // Prevents picking dates before today
+          min={todayStr}
           className="w-full border px-2 py-1 rounded mt-1"
           required
         />
@@ -81,7 +114,9 @@ const BookingForm = ({ space }) => {
       </label>
       <button
         type="submit"
-        className="px-4 py-2 bg-green-600 text-white rounded"
+        className={`px-4 py-2 rounded ${
+          user ? "bg-green-600 text-white" : "bg-blue-600 text-white"
+        }`}
       >
         {user ? "Confirm Booking" : "Login to Book"}
       </button>
