@@ -18,18 +18,18 @@ const Login = () => {
 
   return (
     <div className="max-w-md mx-auto">
-      <h2 className="text-xl font-bold mb-4">Login</h2>
+      <h2 className="text-[#004A3F] text-[30px] text-center font-bold mb-4">Login</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Your name"
-          className="w-full border px-3 py-2 rounded"
+          className="bg-white w-full border px-3 py-2 rounded"
         />
         <div>
           <button
             type="submit"
-            className="px-4 py-2 bg-blue-600 text-white rounded"
+            className="bg-[#004A3F] px-4 py-2 text-white font-bold rounded-lg"
           >
             Sign in
           </button>
