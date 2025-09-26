@@ -18,22 +18,25 @@ const DashboardPage = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">My Bookings</h1>
+      <div className="text-center">
+        <h1 className="bg-[#F2CD76] text-[#004A3F] text-[50px] inline-block rounded-full font-bold mb-4 px-10">My Bookings</h1>
+      </div>
+      
       {bookings.length === 0 ? (
         <p>No bookings yet.</p>
       ) : (
-        <ul className="space-y-4">
+        <ul className="text-[#004A3F] bg-white space-y-4">
           {bookings.map((b) => (
             <li
               key={b.id}
-              className="border p-4 rounded flex justify-between items-center"
+              className="border p-6 rounded-xl flex justify-between items-center shadow-xl m"
             >
               <div>
-                <div className="font-semibold">{b.spaceName}</div>
-                <div className="text-sm text-gray-600">
+                <div className="text-[25px] font-bold">{b.spaceName}</div>
+                <div className="text-[18px] text-gray-600">
                   {b.date} · {b.timeSlot}
                 </div>
-                <div className="text-sm">
+                <div className="text-[18px]">
                   Booked: {new Date(b.createdAt).toLocaleString()}
                 </div>
               </div>

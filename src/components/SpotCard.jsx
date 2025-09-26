@@ -15,7 +15,7 @@ const SpotCard = ({ space }) => {
         <h3 className="text-[#004A3F] font-bold text-[25px] mb-3">
           {space.name}
         </h3>
-        <p className="mb-4 text-sm text-gray-600">{space.location}</p>
+        <p className="mb-6 text-[18px] text-gray-600">{space.location}</p>
         <div className="mt-2 flex items-center justify-between">
           <span className="text-[#004A3F] text-[25px] font-bold absolute bottom-4 left-4 ">₱{space.price}</span>
           <Link

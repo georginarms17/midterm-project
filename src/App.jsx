@@ -22,7 +22,6 @@ function App() {
               <Route path="/space/:spaceId" element={<SpotDetailPage />} />
               <Route path="/login" element={<Login />} />
 
-              {/* Protected chunk: uses the ProtectedRoute (Outlet) */}
               <Route element={<ProtectedRoute />}>
                 <Route path="/dashboard/my-bookings" element={<DashboardPage />} />
               </Route>

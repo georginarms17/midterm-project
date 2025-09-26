@@ -3,10 +3,10 @@ import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 const Header = () => {
-  const { user, logout } = useAuth();
+  const { user, logout } = useAuth();                                                             //gets user from AuthContext
 
   return (
-    <header className="bg-[#FFDBDB] shadow">
+    <header className="bg-[#FFDBDB] shadow mb-2">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <Link to="/" className="text-[#004A3F] text-2xl font-bold">
           StudySpot
@@ -24,7 +24,7 @@ const Header = () => {
           ) : (
             <>
               <span className="px-3">Hi, {user.name}</span>
-              <button onClick={logout} className="px-3 py-1 border rounded">
+              <button onClick={logout} className="text-white font-bold bg-red-500 px-3 py-1 border rounded-xl">
                 Logout
               </button>
             </>
