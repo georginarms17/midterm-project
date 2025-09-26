@@ -14,7 +14,7 @@ function App() {
   return (
     <AuthProvider>
       <BookingProvider>
-        <div className="min-h-screen flex flex-col">
+        <div className="bg-[#FFF6F7] min-h-screen flex flex-col">
           <Header />
           <main className="container mx-auto px-4 py-8 flex-1">
             <Routes>
